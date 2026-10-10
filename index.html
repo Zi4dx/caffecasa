@@ -172,6 +172,11 @@
     .branch:hover .arrow{transform:translateX(-4px);color:var(--gold)}
     .branch:focus-visible,.sheet-close:focus-visible,.link-btn:focus-visible{outline:1px solid var(--gold);outline-offset:2px}
 
+    .menu-viewer{position:fixed;inset:0;z-index:50;background:var(--brand-deep);display:none;flex-direction:column}
+    .menu-viewer.open{display:flex}
+    .menu-viewer-head{height:58px;flex:0 0 58px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid var(--line-strong);background:var(--brand-deep)}
+    .menu-viewer-title{margin:0;font-family:"Cormorant Garamond","Cairo",serif;font-size:23px;letter-spacing:2px;font-weight:500;color:var(--gold)}
+    .menu-viewer-frame{display:block;border:0;width:100%;flex:1;min-height:0;background:#fff}
     .toast{
       position:fixed;left:50%;bottom:24px;
       transform:translate(-50%,20px);
@@ -207,6 +212,20 @@
     </section>
 
     <section class="links" aria-label="روابط التواصل الاجتماعي">
+
+      <button type="button" class="link-card link-btn" onclick="openMenu()" aria-label="عرض المنيو داخل الموقع">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 3.8h9l3 3V20a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.8a1 1 0 0 1 1-1Z"/>
+            <path d="M14.5 4v4h4M8 12h8M8 15.5h8M8 8.5h3"/>
+          </svg>
+        </span>
+        <span class="link-text">
+          <span class="link-title">Menu</span>
+          <span class="link-sub" style="direction:rtl">تصفّح المنيو</span>
+        </span>
+        <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+      </button>
 
       <a class="link-card" href="https://www.instagram.com/caffecasa_ly?stkn=cHRzcWMxbmc0YTNs&amp;utm_source=qr" target="_blank" rel="noopener noreferrer">
         <span class="icon">
@@ -287,6 +306,14 @@
     <a class="branch" href="https://maps.app.goo.gl/6uQjAAUH5n8xa66Q8?g_st=iw" target="_blank" rel="noopener noreferrer"><svg class="pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.3"/></svg><span>مول تشيس فيلد - القاهرة الجديدة</span><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>
   </div>
 
+  <section class="menu-viewer" id="menuViewer" role="dialog" aria-modal="true" aria-labelledby="menuViewerTitle" aria-hidden="true">
+    <div class="menu-viewer-head">
+      <h2 class="menu-viewer-title" id="menuViewerTitle">Menu</h2>
+      <button class="sheet-close" type="button" aria-label="إغلاق المنيو" onclick="closeMenu()">&times;</button>
+    </div>
+    <iframe class="menu-viewer-frame" src="Caffe_Casa_Menu_Feedback_QR.pdf#view=FitH" title="Caffè Casa Menu"></iframe>
+  </section>
+
   <div class="toast" id="toast">تم نسخ رابط الصفحة</div>
 
   <script>
@@ -301,6 +328,16 @@
         }
       }catch(e){}
     }
+    function openMenu(){
+      const viewer=document.getElementById("menuViewer");
+      viewer.classList.add("open");viewer.setAttribute("aria-hidden","false");
+      document.body.style.overflow="hidden";
+    }
+    function closeMenu(){
+      const viewer=document.getElementById("menuViewer");
+      viewer.classList.remove("open");viewer.setAttribute("aria-hidden","true");
+      document.body.style.overflow="";
+    }
     function openBranches(){
       document.getElementById("sheetBg").classList.add("open");
       const sh=document.getElementById("sheet");
@@ -311,7 +348,7 @@
       const sh=document.getElementById("sheet");
       sh.classList.remove("open");sh.setAttribute("aria-hidden","true");
     }
-    document.addEventListener("keydown",e=>{if(e.key==="Escape")closeBranches()});
+    document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeBranches();closeMenu()}});
     function showToast(){
       const toast = document.getElementById("toast");
       toast.classList.add("show");
