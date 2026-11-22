@@ -4,6 +4,7 @@ Caffè Casa Link Page
 ملفات الموقع:
 - index.html
 - logo.png
+- Caffe_Casa_Menu_Feedback_QR.pdf
 
 طريقة التشغيل:
 1. ضع الملفين في نفس المجلد.
